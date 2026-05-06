@@ -1,107 +1,72 @@
 #include <stdio.h>
 #include <string.h>
 
-// ANÁLISE DE ALGORITMO - Desafio Chef Sort
-// Este é o arquivo inicial para o desafio. 
-// Dependendo do nível escolhido (Novato, Aventureiro ou Mestre), 
-// descomente e utilize as estruturas e funções correspondentes.
-
-// ====================================================================
-// ESTRUTURAS DE DADOS (Para Níveis Aventureiro e Mestre)
-// ====================================================================
-
-// Struct para o Nível Aventureiro
-/*
+// Definição da struct
 typedef struct {
-    char nome[50];
-    int qtd_ingredientes;
+    int id;
+    char nome[30];
 } Prato;
-*/
 
-// Struct para o Nível Mestre
-/*
-typedef struct {
-    char nome_prato[50];
-    int numero_comanda;
-} Comanda;
-*/
+// Função recursiva para inserir o último elemento na parte ordenada
+void inserirOrdenado(Prato v[], int n) {
+    // Caso base: se o vetor tem apenas 1 elemento ou o elemento anterior é menor/igual
+    if (n <= 0) return;
 
+    Prato ultimo = v[n];
+    int j = n - 1;
 
-// ====================================================================
-// PROTÓTIPOS DAS FUNÇÕES DE ORDENAÇÃO
-// ====================================================================
-
-// Nível Novato: Bubble Sort para strings
-// Dica: Use strcmp() da biblioteca <string.h> para comparar strings.
-// Dica: Passe ponteiros para contadores de comparações e trocas se quiser alterá-los dentro da função.
-void bubbleSortStrings(char arr[][50], int n, int *comparacoes, int *trocas) {
-    // Sua lógica do Bubble Sort aqui
+    // Move os elementos que são maiores que o 'ultimo' para uma posição à frente
+    if (j >= 0 && v[j].id > ultimo.id) {
+        v[j + 1] = v[j];
+        v[j] = ultimo; // Troca temporária para continuar a recursão de inserção
+        inserirOrdenado(v, n - 1);
+    }
 }
 
-// Nível Aventureiro: Selection Sort para array de structs (Prato)
-/*
-void selectionSortPratos(Prato arr[], int n) {
-    // Sua lógica do Selection Sort aqui buscando a menor qtd_ingredientes
+// Função principal do Insertion Sort Recursivo
+void insertionSortRecursivo(Prato v[], int n) {
+    // Caso base: vetor com 1 elemento já está ordenado
+    if (n <= 1) return;
+
+    // Ordena os primeiros n-1 elementos
+    insertionSortRecursivo(v, n - 1);
+
+    // Insere o último elemento na sua posição correta no segmento já ordenado
+    Prato ultimo = v[n - 1];
+    int j = n - 2;
+
+    while (j >= 0 && v[j].id > ultimo.id) {
+        v[j + 1] = v[j];
+        j--;
+    }
+    v[j + 1] = ultimo;
 }
-*/
 
-// Nível Mestre: Recursive Insertion Sort para array de structs (Comanda)
-// Dica: Lembre-se de definir o "caso base" (n <= 1) para parar a recursão!
-/*
-void recursiveInsertionSort(Comanda arr[], int n) {
-    // Sua lógica do Insertion Sort Recursivo aqui
+void imprimirPratos(Prato v[], int tam) {
+    for (int i = 0; i < tam; i++) {
+        printf("ID: %d | Prato: %s\n", v[i].id, v[i].nome);
+    }
 }
-*/
-
-
-// ====================================================================
-// FUNÇÃO PRINCIPAL
-// ====================================================================
 
 int main() {
-    printf("=== BEM-VINDO AO CHEF SORT ===\n\n");
+    // Preenchendo a struct com 5 pratos desordenados
+    Prato cardapio[5] = {
+        {45, "Lasanha"},
+        {12, "Sopa de Cebola"},
+        {88, "Pudim"},
+        {23, "Risoto"},
+        {5,  "Salada Caesar"}
+    };
 
-    // ---------------------------------------------------------
-    // ÁREA DO NÍVEL NOVATO (Despensa / Bubble Sort)
-    // ---------------------------------------------------------
-    /*
-    char ingredientes[5][50] = {"Tomate", "Cebola", "Alho", "Cenoura", "Batata"};
-    int num_ingredientes = 5;
-    int comparacoes = 0;
-    int trocas = 0;
+    printf("--- Cardápio Original ---\n");
+    imprimirPratos(cardapio, 5);
 
-    printf("--- Nivel Novato: Organizando a Despensa ---\n");
-    printf("Lista ANTES da ordenacao:\n");
-    // Laco para imprimir ingredientes antes
+    // Chamada do algoritmo
+    insertionSortRecursivo(cardapio, 5);
 
-    // Chamada da funcao bubbleSortStrings(...)
-
-    printf("\nLista DEPOIS da ordenacao:\n");
-    // Laco para imprimir ingredientes depois
-    // Imprimir totais de comparacoes e trocas
-    */
-
-
-    // ---------------------------------------------------------
-    // ÁREA DO NÍVEL AVENTUREIRO (Pratos / Selection Sort)
-    // ---------------------------------------------------------
-    /*
-    // Inicialize aqui o seu vetor de Pratos
-    
-    printf("\n--- Nivel Aventureiro: Organizando os Pratos ---\n");
-    // Imprima antes, chame a funcao selectionSortPratos, imprima depois
-    */
-
-
-    // ---------------------------------------------------------
-    // ÁREA DO NÍVEL MESTRE (Comandas / Recursive Insertion Sort)
-    // ---------------------------------------------------------
-    /*
-    // Inicialize aqui o seu vetor de Comandas
-    
-    printf("\n--- Nivel Mestre: Organizando as Comandas ---\n");
-    // Imprima antes, chame a funcao recursiveInsertionSort, imprima depois
-    */
+    printf("\n--- Cardápio Ordenado (ID) ---\n");
+    imprimirPratos(cardapio, 5);
 
     return 0;
+                                                                                                                                                                                                                            
 }
