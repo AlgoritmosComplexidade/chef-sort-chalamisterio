@@ -1,1 +1,58 @@
 
+#include <stdio.h>
+#include <string.h>
+
+// Definição da struct
+struct Comida {
+    char nome[50];
+    int qtd_ingredientes;
+};
+
+void selectionSort(struct Comida arr[], int n) {
+    int i, j, min_idx;
+    struct Comida temp;
+
+    // Percorre todo o array
+    for (i = 0; i < n - 1; i++) {
+        // Encontra o elemento com a menor quantidade de ingredientes no restante do array
+        min_idx = i;
+        for (j = i + 1; j < n; j++) {
+            if (arr[j].qtd_ingredientes < arr[min_idx].qtd_ingredientes) {
+                min_idx = j;
+            }
+        }
+
+        // Troca o elemento encontrado com o primeiro elemento do ciclo
+        temp = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = temp;
+    }
+}
+
+int main() {
+    // Inicialização da struct com 5 posições
+    struct Comida cardapio[5] = {
+        {"Pizza de Calabresa", 8},
+        {"Omelete Simples", 3},
+        {"Lasanha Bolonhesa", 12},
+        {"Salada Caesar", 6},
+        {"Arroz Branco", 2}
+    };
+
+    int n = 5;
+
+    printf("--- Cardápio Original ---\n");
+    for (int i = 0; i < n; i++) {
+        printf("Prato: %-20s | Ingredientes: %d\n", cardapio[i].nome, cardapio[i].qtd_ingredientes);
+    }
+
+    // Chamada do algoritmo de ordenação
+    selectionSort(cardapio, n);
+
+    printf("\n--- Cardápio Ordenado (Crescente por Ingredientes) ---\n");
+    for (int i = 0; i < n; i++) {
+        printf("Prato: %-20s | Ingredientes: %d\n", cardapio[i].nome, cardapio[i].qtd_ingredientes);
+    }
+
+    return 0;
+}
