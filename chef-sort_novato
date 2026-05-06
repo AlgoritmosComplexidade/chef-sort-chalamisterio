@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    // Definindo o vetor de strings (5 strings de até 20 caracteres cada)
+    char ingredientes[5][20] = {
+        "Tomate",
+        "Arroz",
+        "Cebola",
+        "Feijao",
+        "Abobora"
+    };
+    
+    char auxiliar[20];
+    int i, j;
+
+    printf("--- Lista Original ---\n");
+    for (i = 0; i < 5; i++) {
+        printf("%s\n", ingredientes[i]);
+    }
+
+    // Algoritmo Bubble Sort
+    for (i = 0; i < 5 - 1; i++) {
+        for (j = 0; j < 5 - i - 1; j++) {
+            // strcmp retorna > 0 se a primeira string for "maior" que a segunda
+            if (strcmp(ingredientes[j], ingredientes[j + 1]) > 0) {
+                
+                // Troca os elementos de lugar
+                strcpy(auxiliar, ingredientes[j]);
+                strcpy(ingredientes[j], ingredientes[j + 1]);
+                strcpy(ingredientes[j + 1], auxiliar);
+            }
+        }
+    }
+
+    printf("\n--- Lista Ordenada ---\n");
+    for (i = 0; i < 5; i++) {
+        printf("%s\n", ingredientes[i]);
+    }
+
+    return 0;
+}
